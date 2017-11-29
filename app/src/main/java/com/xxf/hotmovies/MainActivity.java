@@ -1,11 +1,12 @@
 package com.xxf.hotmovies;
 
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.xxf.hotmovies.adapter.HomeAdapter;
 import com.xxf.hotmovies.bean.Movie;
@@ -22,6 +23,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final int UPDATA_DATA = 1;
+
     private RecyclerView mRecyclerView;
 
     private String jsonResponse;
@@ -32,6 +35,16 @@ public class MainActivity extends AppCompatActivity {
 
     private HomeAdapter mHomeAdapter;
 
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case UPDATA_DATA:
+                    mHomeAdapter.setData(mMovies);
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,11 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         requestData();
-        try {
-            parseJson(jsonResponse);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         initRecyclerView();
 
 
@@ -52,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
     private void initRecyclerView(){
 
         mHomeAdapter = new HomeAdapter(mMovies);
-        Log.d("mHomeAdapter",mHomeAdapter.toString());
         mRecyclerView.setAdapter(mHomeAdapter);
+//        mRecyclerView.addItemDecoration(new DividerGridItemDecoration(this));
         mRecyclerView.setLayoutManager(new GridLayoutManager(this,2));
 
     }
@@ -71,7 +79,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                     jsonResponse = NetworkUtils.getResponseFromHttpUrl(url);
+                    jsonResponse = NetworkUtils.getResponseFromHttpUrl(url);
+                    parseJson(jsonResponse);
+                    Message message = new Message();
+                    message.what = UPDATA_DATA;
+                    mHandler.sendMessage(message);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -83,15 +95,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void parseJson(String json) throws JSONException {
 
-        JSONObject jsonObject = new JSONObject(json);
-        JSONArray results = jsonObject.getJSONArray("results");
-        for (int i=0;i<results.length();i++){
-            JSONObject movie = results.getJSONObject(i);
-            long id = movie.getLong("id");
-            String title = movie.getString("title");
-            String poster_path = Constants.API.POSTER_PATH+movie.getString("poster_path");
-            String overview = movie.getString("overview");
-            Double vote_average = movie.getDouble("vote_average");
+            JSONObject jsonObject = new JSONObject(json);
+            JSONArray results = jsonObject.getJSONArray("results");
+            for (int i=0;i<results.length();i++){
+                JSONObject movie = results.getJSONObject(i);
+                long id = movie.getLong("id");
+                String title = movie.getString("title");
+                String poster_path = Constants.API.POSTER_PATH+movie.getString("poster_path");
+                String overview = movie.getString("overview");
+                Double vote_average = movie.getDouble("vote_average");
 
 
             Movie movie1 = new Movie();

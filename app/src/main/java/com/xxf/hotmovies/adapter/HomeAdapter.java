@@ -25,7 +25,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     public HomeAdapter(List<Movie> movies){
         mMovies = movies;
-        Log.d("1",mMovies.toString());
     }
 
     @Override
@@ -45,9 +44,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-//        Picasso.with(mContext).load(mMovies.get(position).getPoster_path()).into(holder.mImageView);
+        Picasso.with(mContext).load(mMovies.get(position).getPoster_path()).into(holder.mImageView);
 
-        Picasso.with(mContext).load("http://i.imgur.com/DvpvklR.png").into(holder.mImageView);
 
         Log.d("Picasso","Picasso");
 

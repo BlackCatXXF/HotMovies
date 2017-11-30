@@ -2,4 +2,7 @@
     <string name="app_name">HotMovies</string>
     <string name="popular_movie">流行电影</string>
     <string name="top_rated_movie">评分电影</string>
+    <string name="error_message">
+        An error has occurred. Please try again by clicking REFRESH
+    </string>
 </resources>

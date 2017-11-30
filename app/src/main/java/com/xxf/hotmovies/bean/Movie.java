@@ -1,16 +1,19 @@
 package com.xxf.hotmovies.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by dell on 2017/11/27.
  */
 
-public class Movie {
+public class Movie implements Serializable{
 
     private long id;
     private String title;
     private String poster_path;
     private String overview;
     private Double vote_average;
+    private String release_date;
 
     public long getId() {
         return id;
@@ -50,5 +53,13 @@ public class Movie {
 
     public void setVote_average(Double vote_average) {
         this.vote_average = vote_average;
+    }
+
+    public String getRelease_date() {
+        return release_date;
+    }
+
+    public void setRelease_date(String release_date) {
+        this.release_date = release_date;
     }
 }

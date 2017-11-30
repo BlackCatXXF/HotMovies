@@ -39,12 +39,13 @@ public class MainActivity extends AppCompatActivity {
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         requestData();
-        try {
-            parseJson(jsonResponse);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        initRecyclerView();
+        // 下面的这些操作要等网络请求完成之后再去做，jsonResponse 现在的值是 null，因为它还没有被初始化
+//        try {
+//            parseJson(jsonResponse);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        initRecyclerView();
 
 
     }
@@ -71,8 +72,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                     jsonResponse = NetworkUtils.getResponseFromHttpUrl(url);
+                    jsonResponse = NetworkUtils.getResponseFromHttpUrl(url);
 
+                    // 这时候 jsonResponse 已经初始化好了，可以开始进行数据解析了
+                    parseJson(jsonResponse);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -104,6 +107,14 @@ public class MainActivity extends AppCompatActivity {
             mMovies.add(movie1);
         }
 
+        // json 已经解析成 mMovies，可以更新 ui 了
+        // 注意哦，因为这个方法是在其它线程调用的，所以现在它不在主线程，我们要在主线程进行 ui 的更新操作
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                initRecyclerView();
+            }
+        });
     }
 
 }

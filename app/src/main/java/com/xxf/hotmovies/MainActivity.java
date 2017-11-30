@@ -1,12 +1,13 @@
 package com.xxf.hotmovies;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.xxf.hotmovies.adapter.HomeAdapter;
 import com.xxf.hotmovies.bean.Movie;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case UPDATA_DATA:
-                    mHomeAdapter.setData(mMovies);
+                    initRecyclerView();
             }
         }
     };
@@ -51,10 +52,31 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        requestData();
-        initRecyclerView();
+        fetchData(Constants.API.MOVIE_POPULAR);
 
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.sort,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.popular_movie:
+                fetchData(Constants.API.MOVIE_POPULAR);
+                mHomeAdapter.setData(mMovies);
+                break;
+            case R.id.top_rated_movie:
+                fetchData(Constants.API.MOVIE_TOP);
+                mHomeAdapter.setData(mMovies);
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void initRecyclerView(){
@@ -66,11 +88,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void requestData(){
+    private void fetchData(String httpUrl){
 
-        Uri uri = Uri.parse(Constants.API.MOVIE_POPULAR);
         try {
-            url = new URL(uri.toString());
+            url = new URL(httpUrl);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -80,6 +101,9 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 try {
                     jsonResponse = NetworkUtils.getResponseFromHttpUrl(url);
+                    if (mMovies != null){
+                        mMovies.clear();
+                    }
                     parseJson(jsonResponse);
                     Message message = new Message();
                     message.what = UPDATA_DATA;

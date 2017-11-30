@@ -2,7 +2,6 @@ package com.xxf.hotmovies.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +32,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             mContext = parent.getContext();
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.recyclerview_item,parent,false);
-        return new ViewHolder(view);
+        ViewHolder holder = new ViewHolder(view);
+        holder.mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        return holder;
     }
 
     public void setData(List<Movie> data){
@@ -47,13 +53,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         Picasso.with(mContext).load(mMovies.get(position).getPoster_path()).into(holder.mImageView);
 
 
-        Log.d("Picasso","Picasso");
-
     }
 
     @Override
     public int getItemCount() {
-        Log.d("size",mMovies.size()+"");
         return mMovies.size();
     }
 

@@ -108,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
                     Message message = new Message();
                     message.what = UPDATA_DATA;
                     mHandler.sendMessage(message);
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xxf.hotmovies.util;
+package com.xxf.hotmovies.utils;
 
 import java.io.IOException;
 import java.io.InputStream;

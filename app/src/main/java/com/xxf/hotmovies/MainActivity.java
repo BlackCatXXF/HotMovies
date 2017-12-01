@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.xxf.hotmovies.adapter.HomeAdapter;
 import com.xxf.hotmovies.bean.Movie;
-import com.xxf.hotmovies.util.NetworkUtils;
+import com.xxf.hotmovies.utils.NetworkUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;

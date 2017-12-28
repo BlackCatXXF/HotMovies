@@ -79,7 +79,6 @@ freeline_project_description.json
 hs_err_pid*
 
 app/libs/
-app/src/main/res/drawable/
 /.gitignore
 !/build/
 /build/

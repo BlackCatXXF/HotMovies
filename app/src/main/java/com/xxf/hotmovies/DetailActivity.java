@@ -10,34 +10,29 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.xxf.hotmovies.bean.Movie;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by dell on 2017/11/30.
  */
 
 public class DetailActivity extends AppCompatActivity {
 
-    private TextView mName;
-    private ImageView mImageView;
-    private TextView mDateVote;
-    private TextView mOverview;
+    @BindView(R.id.movie_name_detail) TextView mName;
+    @BindView(R.id.image_view_detail) ImageView mImageView;
+    @BindView(R.id.date_vote_detail) TextView mDateVote;
+    @BindView(R.id.overview_detail) TextView mOverview;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        ButterKnife.bind(this);
 
-        init();
         showDetail();
     }
 
-    private void init(){
-
-        mName = (TextView) findViewById(R.id.movie_name_detail);
-        mImageView = (ImageView) findViewById(R.id.image_view_detail);
-        mDateVote = (TextView) findViewById(R.id.date_vote_detail);
-        mOverview = (TextView) findViewById(R.id.overview_detail);
-
-    }
 
     private Movie getMovie(){
         Intent intent = getIntent();

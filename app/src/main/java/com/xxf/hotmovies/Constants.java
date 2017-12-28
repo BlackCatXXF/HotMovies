@@ -9,7 +9,7 @@ public class Constants {
 
     class API{
 
-        public static final String API_KEY="";
+        public static final String API_KEY="8c2b518398b2ffa760ae71550a17835c";
 
         public static final String MOVIE_POPULAR = "http://api.themoviedb.org/3/movie/popular?language=zh&api_key="+API_KEY;
 

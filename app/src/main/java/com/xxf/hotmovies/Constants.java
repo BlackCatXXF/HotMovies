@@ -7,7 +7,13 @@ package com.xxf.hotmovies;
 
 public class Constants {
 
-    class API{
+    public static long  MOVIE_ID = 0;
+
+    public static String YOUTUBE_KEY = "";
+
+    public static final String YOUTUBE_URL = "https://www.youtube.com/watch?v="+YOUTUBE_KEY+"&list=PLHPTxTxtC0ial7mOT-Srrguvokjvlcbg7";
+
+    static class API{
 
         public static final String API_KEY="8c2b518398b2ffa760ae71550a17835c";
 
@@ -16,6 +22,10 @@ public class Constants {
         public static final String MOVIE_TOP ="http://api.themoviedb.org/3/movie/top_rated?language=zh&api_key="+API_KEY;
 
         public static final String POSTER_PATH = "http://image.tmdb.org/t/p/w185/";
+
+        public static final String MOVIE_TRAILER = "https://api.themoviedb.org/3/movie/"+MOVIE_ID+"/videos?language=en-US&api_key="+API_KEY;
+
+        public static final String MOVIE_REVIEW = "https://api.themoviedb.org/3/movie/"+MOVIE_ID+"/reviews?language=en-US&api_key="+API_KEY;
     }
 
 }

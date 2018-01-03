@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/movie_name_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Movie Name"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/image_view_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/date_vote_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/image_view_detail"
+            tools:text="Data_Vote_Time"/>
+        <Button
+            android:id="@+id/btn_favourite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_favourite"
+            android:layout_below="@id/date_vote_detail"
+            android:layout_toRightOf="@id/image_view_detail"
+            tools:text="@string/button_favourite"/>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+        <TextView
+            android:id="@+id/overview_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Overview"/>
+    </ScrollView>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/cardview_dark_background"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_trailer"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/cardview_dark_background"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/non_review"
+            tools:text="review"/>
+    </ScrollView>
+
+</LinearLayout>

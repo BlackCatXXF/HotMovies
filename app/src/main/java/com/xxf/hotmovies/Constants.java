@@ -22,7 +22,9 @@ public class Constants {
 
     public static List<Movie> sMovies = new ArrayList<>();
 
-    static class API{
+    public static boolean isTwoPane;
+
+    public class API{
 
         public static final String API_KEY="8c2b518398b2ffa760ae71550a17835c";
 
@@ -32,9 +34,9 @@ public class Constants {
 
         public static final String POSTER_PATH = "http://image.tmdb.org/t/p/w185/";
 
-        public static  String MOVIE_TRAILER = "https://api.themoviedb.org/3/movie/"+MOVIE_ID+"/videos?language=en-US&api_key="+API_KEY;
-
-        public static  String MOVIE_REVIEW = "https://api.themoviedb.org/3/movie/"+MOVIE_ID+"/reviews?language=en-US&api_key="+API_KEY;
+//        public static  String MOVIE_TRAILER = "https://api.themoviedb.org/3/movie/"+MOVIE_ID+"/videos?language=en-US&api_key="+API_KEY;
+//
+//        public static  String MOVIE_REVIEW = "https://api.themoviedb.org/3/movie/"+MOVIE_ID+"/reviews?language=en-US&api_key="+API_KEY;
     }
 
 }

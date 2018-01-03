@@ -1,6 +1,7 @@
 package com.xxf.hotmovies;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -9,11 +10,14 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.xxf.hotmovies.adapter.HomeAdapter;
 import com.xxf.hotmovies.bean.Movie;
 import com.xxf.hotmovies.utils.NetworkUtils;
@@ -81,10 +85,27 @@ public class MainActivity extends AppCompatActivity {
             case R.id.top_rated_movie:
                 fetchData(Constants.API.MOVIE_TOP);
                 break;
+            case R.id.favourite_movie:
+                getFavouriteData();
+                mHomeAdapter.setData(mMovies);
+                //重新设置adapter来显示收藏电影
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void getFavouriteData(){
+
+        SharedPreferences preferences=getSharedPreferences(Constants.SHARED_FAVOURITE, Context.MODE_PRIVATE);
+        String json = preferences.getString("json","");
+        if (json != ""){
+            Gson gson = new Gson();
+            mMovies = gson.fromJson(json, new TypeToken<List<Movie>>(){}.getType());
+        }else {
+            Log.d("json","获取的本地json为空");
+        }
+
     }
 
     private void initRecyclerView() {

@@ -6,4 +6,6 @@
         An error has occurred. Please try again by clicking REFRESH
     </string>
     <string name="button_favourite">收藏</string>
+    <string name="favourite_movie">收藏电影</string>
+    <string name="non_review">暂无评论</string>
 </resources>

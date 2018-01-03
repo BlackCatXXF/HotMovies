@@ -2,6 +2,7 @@ package com.xxf.hotmovies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -12,9 +13,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.xxf.hotmovies.adapter.DetailTrailerAdapter;
 import com.xxf.hotmovies.bean.Movie;
@@ -32,6 +36,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.xxf.hotmovies.MainActivity.UPDATA_DATA;
 
@@ -47,6 +52,8 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.overview_detail) TextView mOverview;
     @BindView(R.id.recycler_view_trailer) RecyclerView mTrailerRecyclerView;
     @BindView(R.id.review) TextView mReviews;
+    @BindView(R.id.btn_favourite) Button mFavourite;
+
     private Movie mMovie;
     private URL reviewUrl = null;
     private URL trailerUrl = null;
@@ -82,15 +89,38 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
 
+
         getMovie();
-        Constants.MOVIE_ID = mMovie.getId();
-        String reviewUrl = Constants.API.MOVIE_REVIEW;
-        if (reviews == "") {
-            fetchData(reviewUrl);
-        }
-        fetchTrailer(Constants.API.MOVIE_TRAILER);
+        String trailerUrl = "https://api.themoviedb.org/3/movie/"+mMovie.getId()+"/videos?language=en-US&api_key="+Constants.API.API_KEY;
+        String reviewsUrl = "https://api.themoviedb.org/3/movie/"+mMovie.getId()+"/reviews?language=en-US&api_key="+Constants.API.API_KEY;
+        Log.d("ID", trailerUrl);
+        fetchData(reviewsUrl);
+        Log.d("reviewUrl",reviewsUrl);
+        fetchTrailer(trailerUrl);
         showDetail();
         initRecyclerView();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("destory","destory");
+    }
+
+    @OnClick(R.id.btn_favourite) void setFavourite(){
+
+        Constants.sMovies.add(mMovie);
+        String json = "";
+        Gson gson = new Gson();
+        json = gson.toJson(Constants.sMovies);
+
+        SharedPreferences preferences=getSharedPreferences(Constants.SHARED_FAVOURITE,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=preferences.edit();
+        editor.putString("json", json);
+        editor.commit();
+
+        Toast.makeText(this,"加入收藏成功",Toast.LENGTH_SHORT).show();
+
     }
 
     private void initRecyclerView() {
@@ -161,9 +191,9 @@ public class DetailActivity extends AppCompatActivity {
                 public void run() {
                     try {
                         Log.d("reviewhttpURL",httpUrl);
-                        Log.d("reviewURL", String.valueOf(reviewUrl));
+//                        Log.d("reviewURL", String.valueOf(reviewUrl));
                         reviewJsonResponse = NetworkUtils.getResponseFromHttpUrl(reviewUrl);
-                        Log.d("review",reviewJsonResponse);
+//                        Log.d("review",reviewJsonResponse);
                         parseJson(reviewJsonResponse);
                         Message message = new Message();
                         message.what = UPDATA_DATA;
@@ -185,7 +215,7 @@ public class DetailActivity extends AppCompatActivity {
         for (int i = 0; i < results.length(); i++){
             JSONObject review = results.getJSONObject(i);
             reviews = reviews+review.getString("author")+"  :\n";
-            Log.d("author",review.getString("author"));
+//            Log.d("author",review.getString("author"));
             if (i+1 == results.length()){
                 reviews = reviews+review.getString("content");
             }else {
@@ -204,6 +234,7 @@ public class DetailActivity extends AppCompatActivity {
             JSONObject result = results.getJSONObject(i);
             Trailer trailer = new Trailer();
             trailer.setKey(result.getString("key"));
+            Log.d("trailer",result.getString("key"));
             mTrailers.add(trailer);
         }
 

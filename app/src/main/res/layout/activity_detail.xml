@@ -27,6 +27,7 @@
             android:layout_toRightOf="@id/image_view_detail"
             tools:text="Data_Vote_Time"/>
         <Button
+            android:id="@+id/btn_favourite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/button_favourite"
@@ -35,11 +36,16 @@
             tools:text="@string/button_favourite"/>
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/overview_detail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="Overview"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+        <TextView
+            android:id="@+id/overview_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Overview"/>
+    </ScrollView>
+
 
     <View
         android:layout_width="match_parent"
@@ -65,6 +71,7 @@
             android:id="@+id/review"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@string/non_review"
             tools:text="review"/>
     </ScrollView>
 

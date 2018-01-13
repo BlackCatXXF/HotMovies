@@ -77,6 +77,7 @@ public class MainFragment extends Fragment {
         View view = inflater.inflate(R.layout.main_frag,container,false);
         ButterKnife.bind(this,view);
 
+        setHasOptionsMenu(true);
         fetchData(Constants.API.MOVIE_POPULAR);
 
         initRecyclerView();
@@ -140,7 +141,7 @@ public class MainFragment extends Fragment {
         mHomeAdapter = new HomeAdapter(mMovies,getActivity());
         mRecyclerView.setAdapter(mHomeAdapter);
 //        mRecyclerView.addItemDecoration(new DividerGridItemDecoration(this));
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
     }
 

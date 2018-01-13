@@ -92,17 +92,17 @@ public class DetailFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.activity_detail,container,false);
+        view = inflater.inflate(R.layout.detail_fragment,container,false);
         ButterKnife.bind(this,view);
 
-        String trailerUrl = "https://api.themoviedb.org/3/movie/"+mMovie.getId()+"/videos?language=en-US&api_key="+ Constants.API.API_KEY;
-        String reviewsUrl = "https://api.themoviedb.org/3/movie/"+mMovie.getId()+"/reviews?language=en-US&api_key="+Constants.API.API_KEY;
-//        Log.d("ID", trailerUrl);
-        fetchData(reviewsUrl);
-//        Log.d("reviewUrl",reviewsUrl);
-        fetchTrailer(trailerUrl);
-        showDetail();
-        initRecyclerView();
+//        String trailerUrl = "https://api.themoviedb.org/3/movie/"+mMovie.getId()+"/videos?language=en-US&api_key="+ Constants.API.API_KEY;
+//        String reviewsUrl = "https://api.themoviedb.org/3/movie/"+mMovie.getId()+"/reviews?language=en-US&api_key="+Constants.API.API_KEY;
+////        Log.d("ID", trailerUrl);
+//        fetchData(reviewsUrl);
+////        Log.d("reviewUrl",reviewsUrl);
+//        fetchTrailer(trailerUrl);
+//        showDetail();
+//        initRecyclerView();
 
         return view;
     }
@@ -115,6 +115,7 @@ public class DetailFragment extends Fragment {
 //        Log.d("reviewUrl",reviewsUrl);
         fetchTrailer(trailerUrl);
         showDetail();
+        initRecyclerView();
     }
 
     @OnClick(R.id.btn_favourite) void setFavourite(){

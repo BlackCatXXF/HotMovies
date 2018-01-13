@@ -2,7 +2,6 @@ package com.xxf.hotmovies.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 import com.xxf.hotmovies.Constants;
-import com.xxf.hotmovies.DetailActivity;
 import com.xxf.hotmovies.R;
 import com.xxf.hotmovies.bean.Movie;
 import com.xxf.hotmovies.fragment.DetailFragment;
@@ -29,9 +27,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     private Activity mActivity;
 
+
     public HomeAdapter(List<Movie> movies,Activity activity){
         mMovies = movies;
         mActivity = activity;
+
+
+//        detailFragment = (DetailFragment) mActivity.getFragmentManager().findFragmentById(R.id.detail_fragmeent);
     }
 
     @Override
@@ -40,6 +42,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             mContext = parent.getContext();
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.recyclerview_item,parent,false);
+
         final ViewHolder holder = new ViewHolder(view);
         holder.mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,13 +50,22 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 int position = holder.getLayoutPosition();
                 Movie movie = mMovies.get(position);
                 if (Constants.isTwoPane){
+
                     DetailFragment detailFragment = (DetailFragment) mActivity.getFragmentManager().findFragmentById(R.id.detail_fragmeent);
                     detailFragment.getMovie(movie);
                     detailFragment.refresh();
                 }else {
-                    Intent intent = new Intent(mContext, DetailActivity.class);
-                    intent.putExtra("movie",movie);
-                    mContext.startActivity(intent);
+
+
+                    DetailFragment detailFragment = new DetailFragment();
+                    detailFragment.getMovie(movie);
+                    detailFragment.refresh();
+
+                    mActivity.getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_layout,detailFragment)
+                .addToBackStack(null)
+                .commit();
                 }
 
             }

@@ -12,14 +12,14 @@ public class MainActivity extends AppCompatActivity {
 //    private RecyclerView mRecyclerView;
 //
 //    private TextView mErrorMessage;
-//
+
 //    private String jsonResponse;
 //
 //    private URL url = null;
 //
 //    private List<Movie> mMovies = new ArrayList<>();
 //
-//    private HomeAdapter mHomeAdapter;
+////    private HomeAdapter mHomeAdapter;
 //
 //    private Handler mHandler = new Handler() {
 //        @Override
@@ -37,11 +37,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_fragment,new MainFragment())
-                .addToBackStack(null)
-                .commit();
+        if (Constants.isTwoPane == false){
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.main_layout,new MainFragment())
+                    .addToBackStack(null)
+                    .commit();
+        }
+
 
 //        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 //        mErrorMessage = (TextView) findViewById(R.id.tv_error_message_display);
@@ -89,14 +92,14 @@ public class MainActivity extends AppCompatActivity {
 //
 //    }
 //
-//    private void initRecyclerView() {
-//
-//        mHomeAdapter = new HomeAdapter(mMovies,this);
-//        mRecyclerView.setAdapter(mHomeAdapter);
-////        mRecyclerView.addItemDecoration(new DividerGridItemDecoration(this));
-//        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-//
-//    }
+////    private void initRecyclerView() {
+////
+////        mHomeAdapter = new HomeAdapter(mMovies,this);
+////        mRecyclerView.setAdapter(mHomeAdapter);
+//////        mRecyclerView.addItemDecoration(new DividerGridItemDecoration(this));
+////        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+////
+////    }
 //
 //    private void fetchData(String httpUrl) {
 //
@@ -126,8 +129,8 @@ public class MainActivity extends AppCompatActivity {
 //            }).start();
 //
 //        }else {
-//            mRecyclerView.setVisibility(View.GONE);
-//            mErrorMessage.setVisibility(View.VISIBLE);
+////            mRecyclerView.setVisibility(View.GONE);
+////            mErrorMessage.setVisibility(View.VISIBLE);
 //        }
 //
 //

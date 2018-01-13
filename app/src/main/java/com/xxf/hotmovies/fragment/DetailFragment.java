@@ -107,6 +107,14 @@ public class DetailFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!Constants.isTwoPane)
+        refresh();
+        Log.d("istwo2", String.valueOf(Constants.isTwoPane));
+    }
+
     public void refresh(){
         String trailerUrl = "https://api.themoviedb.org/3/movie/"+mMovie.getId()+"/videos?language=en-US&api_key="+ Constants.API.API_KEY;
         String reviewsUrl = "https://api.themoviedb.org/3/movie/"+mMovie.getId()+"/reviews?language=en-US&api_key="+Constants.API.API_KEY;
@@ -117,6 +125,8 @@ public class DetailFragment extends Fragment {
         showDetail();
         initRecyclerView();
     }
+
+
 
     @OnClick(R.id.btn_favourite) void setFavourite(){
 

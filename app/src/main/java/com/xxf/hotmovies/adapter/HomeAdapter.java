@@ -3,6 +3,7 @@ package com.xxf.hotmovies.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,19 +54,20 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
                     DetailFragment detailFragment = (DetailFragment) mActivity.getFragmentManager().findFragmentById(R.id.detail_fragmeent);
                     detailFragment.getMovie(movie);
+                    Log.d("movieId", String.valueOf(movie.getId()));
                     detailFragment.refresh();
                 }else {
 
 
                     DetailFragment detailFragment = new DetailFragment();
                     detailFragment.getMovie(movie);
-                    detailFragment.refresh();
 
                     mActivity.getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.main_layout,detailFragment)
                 .addToBackStack(null)
                 .commit();
+
                 }
 
             }

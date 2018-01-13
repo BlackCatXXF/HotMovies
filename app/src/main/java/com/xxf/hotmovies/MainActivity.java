@@ -9,6 +9,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final int UPDATA_DATA = 1;
 
+
 //    private RecyclerView mRecyclerView;
 //
 //    private TextView mErrorMessage;
@@ -37,11 +38,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        if (Constants.isTwoPane == false){
+        if (findViewById(R.id.detail_layout) == null){
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.main_layout,new MainFragment())
-                    .addToBackStack(null)
+//                    .addToBackStack(null)
                     .commit();
         }
 

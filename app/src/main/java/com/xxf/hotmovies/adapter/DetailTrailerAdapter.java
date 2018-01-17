@@ -46,6 +46,7 @@ public class DetailTrailerAdapter extends RecyclerView.Adapter<DetailTrailerAdap
                 Constants.YOUTUBE_KEY = mTrailers.get(position).getKey();
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(Constants.YOUTUBE_URL));
+                if (intent.resolveActivity(mContext.getPackageManager())!= null)
                 mContext.startActivity(intent);
             }
         });

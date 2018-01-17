@@ -1,10 +1,12 @@
 package com.xxf.hotmovies.fragment;
 
 import android.app.Fragment;
+import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,13 +22,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.xxf.hotmovies.Constants;
 import com.xxf.hotmovies.R;
 import com.xxf.hotmovies.adapter.DetailTrailerAdapter;
 import com.xxf.hotmovies.bean.Movie;
 import com.xxf.hotmovies.bean.Trailer;
+import com.xxf.hotmovies.data.MovieContract;
 import com.xxf.hotmovies.utils.NetworkUtils;
 
 import org.json.JSONArray;
@@ -59,12 +61,17 @@ public class DetailFragment extends Fragment {
     @BindView(R.id.recycler_view_trailer) RecyclerView mTrailerRecyclerView;
     @BindView(R.id.review) TextView mReviews;
     @BindView(R.id.btn_favourite) Button mFavourite;
+    @BindView(R.id.btn_cancel_favourite) Button mCancelFavourite;
 
     private Movie mMovie;
     private URL reviewUrl = null;
     private URL trailerUrl = null;
     private String reviewJsonResponse;
     private String trailerJsonResponse;
+
+    private static final int MOVIE_LOADER_ID = 0;
+
+    private String id;
 
     private List<Trailer> mTrailers = new ArrayList<>();
 
@@ -73,6 +80,8 @@ public class DetailFragment extends Fragment {
     public static final int UPDATA_TRAILER = 2;
 
     private String reviews = "";
+
+    private int WHAT_LIST;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -95,6 +104,7 @@ public class DetailFragment extends Fragment {
         view = inflater.inflate(R.layout.detail_fragment,container,false);
         ButterKnife.bind(this,view);
 
+
 //        String trailerUrl = "https://api.themoviedb.org/3/movie/"+mMovie.getId()+"/videos?language=en-US&api_key="+ Constants.API.API_KEY;
 //        String reviewsUrl = "https://api.themoviedb.org/3/movie/"+mMovie.getId()+"/reviews?language=en-US&api_key="+Constants.API.API_KEY;
 ////        Log.d("ID", trailerUrl);
@@ -112,7 +122,13 @@ public class DetailFragment extends Fragment {
         super.onResume();
         if (!Constants.isTwoPane)
         refresh();
-        Log.d("istwo2", String.valueOf(Constants.isTwoPane));
+        if (WHAT_LIST == Constants.ORTHER_LIST){
+            setCancelHide();
+        } else{
+            setCancelShow();
+        }
+
+
     }
 
     public void refresh(){
@@ -130,19 +146,64 @@ public class DetailFragment extends Fragment {
 
     @OnClick(R.id.btn_favourite) void setFavourite(){
 
-        Constants.sMovies.add(mMovie);
-        String json = "";
-        Gson gson = new Gson();
-        json = gson.toJson(Constants.sMovies);
+//        Constants.sMovies.add(mMovie);
+//        String json = "";
+//        Gson gson = new Gson();
+//        json = gson.toJson(Constants.sMovies);
+//
+//        SharedPreferences preferences=getActivity().getSharedPreferences(Constants.SHARED_FAVOURITE, Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor=preferences.edit();
+//        editor.putString("json", json);
+//        editor.commit();
 
-        SharedPreferences preferences=getActivity().getSharedPreferences(Constants.SHARED_FAVOURITE, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor=preferences.edit();
-        editor.putString("json", json);
-        editor.commit();
+        Cursor cursor = getActivity().getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI,null,"name = ?",new String[]{mMovie.getTitle()},null);
+            if (cursor.getCount() == 0){
+                String vote = mMovie.getVote_average()+"";
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(MovieContract.MovieEntry.COLUMN_NAME,mMovie.getTitle());
+                contentValues.put(MovieContract.MovieEntry.COLUMN_IMAGE,mMovie.getPoster_path());
+                contentValues.put(MovieContract.MovieEntry.COLUMN_DATA,mMovie.getRelease_date());
+                contentValues.put(MovieContract.MovieEntry.COLUMN_VOTE,vote);
+                contentValues.put(MovieContract.MovieEntry.COLUMN_OVERVIEW,mMovie.getOverview());
+                Uri uri = getActivity().getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI,contentValues);
 
-        Toast.makeText(getActivity(),"加入收藏成功",Toast.LENGTH_SHORT).show();
+                if (uri != null){
+                    Toast.makeText(getActivity(),"加入收藏成功",Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getActivity(),"加入收藏失败",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+
+
 
     }
+
+    @OnClick(R.id.btn_cancel_favourite) void cancelFavourite(){
+
+        Uri uri = MovieContract.MovieEntry.CONTENT_URI;
+        uri = uri.buildUpon().appendPath(id).build();
+
+        getActivity().getContentResolver().delete(uri,null,null);
+
+    }
+
+    public void setCancelHide(){
+        mCancelFavourite.setVisibility(View.INVISIBLE);
+    }
+
+    public void setCancelShow(){
+        mCancelFavourite.setVisibility(View.VISIBLE);
+    }
+
+    public void deleteId(String id){
+        this.id = id;
+    }
+
+    public void putIsHideCancel(int what){
+        WHAT_LIST = what;
+    }
+
 
     private void initRecyclerView() {
 
@@ -267,7 +328,6 @@ public class DetailFragment extends Fragment {
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnected();
     }
-
 
 
 }

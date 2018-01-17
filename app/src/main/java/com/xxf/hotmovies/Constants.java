@@ -24,6 +24,10 @@ public class Constants {
 
     public static boolean isTwoPane;
 
+    public static final int FAVOURITE_LIST = 111;
+
+    public static final int ORTHER_LIST = 222;
+
     public class API{
 
         public static final String API_KEY="";

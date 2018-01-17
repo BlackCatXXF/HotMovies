@@ -35,6 +35,13 @@
             android:layout_below="@id/date_vote_detail"
             android:layout_toRightOf="@id/image_view_detail"
             tools:text="@string/button_favourite"/>
+        <Button
+            android:id="@+id/btn_cancel_favourite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="取消收藏"
+            android:layout_below="@id/btn_favourite"
+            android:layout_toRightOf="@id/image_view_detail"/>
     </RelativeLayout>
 
     <ScrollView

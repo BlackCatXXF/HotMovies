@@ -12,7 +12,7 @@ public class Movie implements Serializable{
     private String title;
     private String poster_path;
     private String overview;
-    private Double vote_average;
+    private String vote_average;
     private String release_date;
 
     public long getId() {
@@ -47,11 +47,11 @@ public class Movie implements Serializable{
         this.overview = overview;
     }
 
-    public Double getVote_average() {
+    public String getVote_average() {
         return vote_average;
     }
 
-    public void setVote_average(Double vote_average) {
+    public void setVote_average(String vote_average) {
         this.vote_average = vote_average;
     }
 
